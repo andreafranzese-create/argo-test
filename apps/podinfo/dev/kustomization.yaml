@@ -1,0 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: argo-test-podinfo-dev
+
+resources:
+  - ../base                            # la Route
+
+helmCharts:
+  - name: podinfo
+    repo: https://stefanprodan.github.io/podinfo
+    version: 6.9.0                     # vedi la nota sotto
+    releaseName: podinfo
+    namespace: argo-test-podinfo-dev
+    skipTests: true
+    valuesFile: ../base/values.yaml    # values comuni
+    valuesInline:                      # values di dev: sovrascrivono quelli comuni
+      replicaCount: 1
+      ui:
+        message: "Ambiente DEV"
+        color: "#2e7d32"               # verde

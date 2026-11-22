@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: httpd-dev
+  namespace: openshift-gitops
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/andreafranzese-create/argo-test.git
+    targetRevision: main
+    path: apps/httpd/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argo-test-httpd-dev
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
