@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: operators
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"      # prima di tutto il resto
+  # niente finalizer: cancellare l'Application non deve disinstallare gli operatori
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/ORG/plik-ha-openshift.git
+    targetRevision: main
+    path: apps/operators
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true
+    syncOptions:
+      - ServerSideApply=true
+    retry:
+      limit: 5
+      backoff: { duration: 15s, factor: 2, maxDuration: 2m }

@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: openshift-pipelines-operator-rh
+  namespace: openshift-operators
+spec:
+  channel: latest                          # il canale di aggiornamento
+  name: openshift-pipelines-operator-rh    # il nome del pacchetto nel catalogo
+  source: redhat-operators                 # il catalogo
+  sourceNamespace: openshift-marketplace   # dove stanno i cataloghi
+  installPlanApproval: Automatic           # aggiornamenti automatici
